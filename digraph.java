@@ -1,55 +1,42 @@
 import java.util.*;
 import java.io.*;
 public class digraph {
-	public int vertices;
-    public Map<String, List<edge>> adjs;
-    public boolean isInvalid;
+	 private Map<String, Integer> stops;
+	    //This Map will holds key value pairs of a stops ID and its associated index in the adjacency list.
+	    private Map<Integer, Integer> stopIndexes;
+	    //This Map will hold key value pairs of an index in the array and its associated stop name (necessary for getting the correct stops from the graph).
+	    private Map<Integer, String> indexToName;
+	    //The Array-list below will be an adjacency list for representing the graph.
+	    private ArrayList<edge>[] adj;
+	    private int V;
+	    
 
-    public digraph(String FileName) throws IOException {
-        String EmptyStr = "";
-        if (FileName == null || EmptyStr.equals(FileName))
-            return;
-        adjs = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(FileName));
-        reader.readLine();         
-        String line = reader.readLine();                             // reads next line
-        line=line.replace(" ", "");                                        // replaces all the spaces 
-        System.out.println(line);    
-        for(int i=0;i<3;i++)
-        {
-        	String prevline = line;
-        	line = reader.readLine();                                //reads next line
-        	 line=line.replace(" ", "");
-        	if(line!=null)
-        	{
-        		String[] elementsprevline = prevline.split(",");
-        		String[] elements = line.split(",");
-        		int trip_id = Integer.parseInt(elementsprevline[0]);
-        		String arrival_time = elementsprevline[1];
-        		String departure_time = elementsprevline[2];
-        		int vertexFrom = Integer.parseInt(elementsprevline[3]);
-        		int vertexTo = Integer.parseInt(elements[3]);
-        		int stop_sequence = Integer.parseInt(elementsprevline[4]);
-        		String stop_headsign = elementsprevline[5];
-        		int pickup_type = Integer.parseInt(elementsprevline[6]);
-        		int drop_off_type = Integer.parseInt(elementsprevline[7]);
-        		double shape_dist_traveled = Double.parseDouble(elementsprevline[8]);
+    public digraph(String stopsFile, String stopTimesFile, String transfersFile) throws IOException {
+    	 stops = new HashMap<String, Integer>();
+         stopIndexes = new HashMap<Integer, Integer>();
+         indexToName = new HashMap<Integer, String>();
+         
+         BufferedReader reader = new BufferedReader(new FileReader(stopsFile));
+         reader.readLine();
+         String line = null;
+         String[] splitLine = null;
+         int vertex = 0;
+         int ID = 0;
+         String name = null;
+         while((line = reader.readLine()) != null)
+         {
+             splitLine = line.split(",");                       //split the line based on commas
+             name = splitLine[2];                               // get the name of the stop  
+             ID = Integer.parseInt(splitLine[0]);               // get the stop id
+             stops.put(name, ID);                               // put stop id and name  
+             stopIndexes.put(ID, vertex);                       // put the ID and vertex(count)
+             indexToName.put(vertex, name);                     // relate the vertex to the name 
+             vertex++;
+         }
+        		reader.close();
+        		V = vertex;                                     // total number of vertices
         		
-        		//System.out.println(arrival_time);
-        		double cost = 1;
-        		List<edge> adjList = adjs.getOrDefault(arrival_time, new ArrayList<>());
-        		 adjList.add(new edge(trip_id, arrival_time, departure_time, vertexFrom, vertexTo, stop_sequence, stop_headsign, pickup_type, drop_off_type, shape_dist_traveled,cost));
-                 adjs.put(arrival_time, adjList);
-                 line = reader.readLine();
-          
-        	
-        	}
-        	 
-        	
-        }
-        
-        
-         reader.close();
+        		
     }
 
 }
