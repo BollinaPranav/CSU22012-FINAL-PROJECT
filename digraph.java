@@ -7,6 +7,8 @@ public class digraph {
 	    //The Array-list below will be an adjacency list for representing the graph.
 	    public Map <Integer,List<edge>> adjs;
 	    public Map <String, List<tripEdge>>adj2;
+	    public Map <Integer, List<tripEdge>>adj3;
+	    List<tripEdge>adjlist= new ArrayList<>();
 	    int vertices = 12480;
 	    
 	public digraph(String stopsFile, String stopTimesFile, String transfersFile) throws IOException {
@@ -82,6 +84,7 @@ public class digraph {
     		String line = null;
     		String[] lineArr = new String[9];
     		adj2 = new HashMap<>();
+    		adj3 = new HashMap<>();
     		String [] tempArr;
     		Arrays.fill(lineArr, null);
     		int tripID = 0;
@@ -120,8 +123,12 @@ public class digraph {
             		dropoff = Integer.parseInt(lineArr[7]);
             		shape = lineArr[8];
             		List<tripEdge> adjList2 = adj2.getOrDefault(arrtime, new ArrayList<>());
+            		adjlist = adj3.getOrDefault(tripID, new ArrayList<>());
                     adjList2.add(new tripEdge(tripID, arrtime, deptime, stopID, stopseq, stophs, pickup, dropoff, shape));
+                    adjlist.add(new tripEdge(tripID, arrtime, deptime, stopID, stopseq, stophs, pickup, dropoff, shape));
+                    adj3.put(tripID, adjlist);
                     adj2.put(arrtime,adjList2);
+                    
             	}
             	else
             	{
@@ -129,11 +136,26 @@ public class digraph {
             	}
             }
     		reader.close();
+    		ArrayList<Integer>tripIDs = new ArrayList<Integer>();
     		
-    		for(tripEdge adjacent : adj2.getOrDefault(time,new ArrayList<>()))
+    		for(tripEdge adjacent : adj2.getOrDefault(time,new ArrayList<>()))               //this is done to print out in sorted tripid form
 			{
-    			System.out.println(adjacent.trip_id+"  " + adjacent.arrival_time+"  "+ adjacent.departure_time+"  "+adjacent.stop_id);
+    			tripIDs.add(adjacent.trip_id);
 			}
+            Collections.sort(tripIDs);
+            int i=0;
+            while(i<tripIDs.size()-1)
+            {
+            for(tripEdge adjacent: adj2.getOrDefault(time, new ArrayList<>()))
+            {
+            	if(adjacent.trip_id == tripIDs.get(i))
+            	{
+        			System.out.println(adjacent.trip_id+"  " + adjacent.arrival_time+"  "+ adjacent.departure_time+"  "+adjacent.stop_id);
+        			i++;
+            	}
+            }
+            }
+            	
             
     		
 	}
