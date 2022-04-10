@@ -48,9 +48,22 @@ public class finalproject {
 			System.out.print("\nInput to bus stopID: ");
 			double[] distances = DijkstraShortestPath(start_id);
 			int stop_id = input.nextInt();
+			double value=0;
+			try {
+				 value= distances[stop_id];
+			}catch(ArrayIndexOutOfBoundsException e){
+				System.out.println("There is no possible path");
+			}
+			if( value==Double.POSITIVE_INFINITY)
+			{
+				System.out.println("There is no possible path");
+			}
+			else
+			{
 			System.out.println("The cost of going from bus stop ID: "+start_id+" to stop ID: "+stop_id+" is "+distances[stop_id]);
 			getPath(stop_id);
 			response=0;
+			}
 			}
 			else if(response==3)
 			{
