@@ -22,6 +22,27 @@ public class finalproject {
 			String time = input.next();
 			digraph = new digraph(time);
 			
+			 boolean runUserQuery2 = true;
+             while (runUserQuery2)
+             {   //Receive the user input.
+                 System.out.print("Please enter the name of the bus stop you would like to search for: ");
+                 String searchQuery = input.next();
+                 searchQuery += input.nextLine();
+                 //Make a TST and calculate output.
+                 part2 q2TST = new part2("stops.txt");
+                 int returnValue = q2TST.ourTST.get(searchQuery);
+                 if (returnValue >= 0)
+                 {
+                 	//We have a dedicated function to print out the stop information for each stop matching the search criteria.
+                 	part2.printStopNamesMatchingCriteria(q2TST);
+                 }
+                 else
+                 {
+                     System.out.println("No search result found, please try again");
+                 }
+                 runUserQuery2 = false;
+             }
+			
 			
 			
 			
