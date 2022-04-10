@@ -45,9 +45,21 @@ public class finalproject {
 			digraph = new digraph ("stops.txt","stop_times.txt","transfers.txt");
 			System.out.print("Input from bus stopID: ");
 			int start_id = input.nextInt();
+			if(start_id>digraph.vertices)
+			{
+				System.out.println("There is no possible path");
+			}
+			else
+			{
 			System.out.print("\nInput to bus stopID: ");
 			double[] distances = DijkstraShortestPath(start_id);
 			int stop_id = input.nextInt();
+			if(stop_id>digraph.vertices)
+			{
+				System.out.println("There is no possible path");
+			}
+			else
+			{
 			double value=0;
 			try {
 				 value= distances[stop_id];
@@ -65,6 +77,8 @@ public class finalproject {
 			response=0;
 			}
 			}
+			}
+			}
 			else if(response==3)
 			{
 			System.out.print("Input arrival time: ");
@@ -78,8 +92,10 @@ public class finalproject {
 			{
 			digraph = new digraph(time);
 			response=0;
+			
 			}
 			}
+			
 			else if(response==2)
 			{
 			
