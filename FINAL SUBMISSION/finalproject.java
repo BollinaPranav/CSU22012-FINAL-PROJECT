@@ -56,8 +56,16 @@ public class finalproject {
 			{
 			System.out.print("Input arrival time: ");
 			String time = input.next();
+			boolean status = checkvalidtime(time);
+			if(status==false)
+			{
+				System.out.println("The input has to be of format HH:mm:ss");
+			}
+			else
+			{
 			digraph = new digraph(time);
 			response=0;
+			}
 			}
 			else if(response==2)
 			{
@@ -111,6 +119,36 @@ public class finalproject {
 		}
 	}
 	
+	private static boolean checkvalidtime(String giventime) {
+		// TODO Auto-generated method stub
+		String [] timeArr = null;
+		try {
+			int Value = Integer.parseInt(giventime);
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		if(!giventime.contains(":"))
+		{
+			return false;
+		}
+		timeArr = giventime.split(":");
+    	
+    	if(Integer.parseInt(timeArr[0])>23)
+    	{		
+    		return false;
+    		
+    	}
+    	else if(Integer.parseInt(timeArr[0])==23 && (Integer.parseInt(timeArr[1])>59 || Integer.parseInt(timeArr[2])>59))
+    	{
+    		return false;
+    		
+    	}
+    	
+		
+		return true;
+	}
+	
+
 	private static ArrayList<Integer> getPath(int stopID) {
 		// TODO Auto-generated method stub
 		

@@ -8,7 +8,6 @@ public class digraph {
 	    public Map <Integer,List<edge>> adjs;
 	    public Map <String, List<tripEdge>>adj2;
 	    
-	    List<tripEdge>adjlist= new ArrayList<>();
 	    int vertices = 12480;
 	    
 	public digraph(String stopsFile, String stopTimesFile, String transfersFile) throws IOException {
@@ -123,7 +122,6 @@ public class digraph {
 				shape = lineArr[8];
 				List<tripEdge> adjList2 = adj2.getOrDefault(arrtime, new ArrayList<>());
 				adjList2.add(new tripEdge(tripID, arrtime, deptime, stopID, stopseq, stophs, pickup, dropoff, shape));
-				adjlist.add(new tripEdge(tripID, arrtime, deptime, stopID, stopseq, stophs, pickup, dropoff, shape));
 				adj2.put(arrtime,adjList2);
 
 			}
@@ -147,7 +145,15 @@ public class digraph {
 			{
 				if(adjacent.trip_id == tripIDs.get(i))
 				{
-					System.out.println(adjacent.trip_id+"  " + adjacent.arrival_time+"  "+ adjacent.departure_time+"  "+adjacent.stop_id);
+					System.out.println("\ntrip ID: "+adjacent.trip_id);
+					System.out.println("Arrival time: " + adjacent.arrival_time);
+					System.out.println("Departure time: "+ adjacent.departure_time);
+					System.out.println("Stop ID:  "+adjacent.stop_id);
+					System.out.println("Stop sequence: "+adjacent.stop_sequence);
+					System.out.println("Stop headsign: "+adjacent.stop_headsign);
+					System.out.println("Pickup type: "+adjacent.pickup_type);
+					System.out.println("Dropoff type: "+adjacent.drop_off_type);
+					System.out.println("Shape and distance travelled: "+adjacent.shape_dist_traveled);
 					i++;
 				}
 				if(i==tripIDs.size())
@@ -161,10 +167,18 @@ public class digraph {
 
 	}
 
-	private boolean checkvalidtime(String giventime) {
+	boolean checkvalidtime(String giventime) {
 		// TODO Auto-generated method stub
 		String [] timeArr = null;
-		
+		try {
+			int Value = Integer.parseInt(giventime);
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		if(!giventime.contains(":"))
+		{
+			return false;
+		}
 		timeArr = giventime.split(":");
     	
     	if(Integer.parseInt(timeArr[0])>23)
@@ -177,6 +191,7 @@ public class digraph {
     		return false;
     		
     	}
+    	
 		
 		return true;
 	}
